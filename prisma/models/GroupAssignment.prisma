@@ -1,0 +1,14 @@
+import { Group } from "Group"
+import { User } from "User"
+
+model GroupAssignment {
+    group_id String
+    user_id  String
+
+    group Group @relation(fields: [group_id], references: [id])
+    user  User  @relation(fields: [user_id], references: [id])
+
+    @@id([group_id, user_id])
+    @@map("group_assignments")
+}
+

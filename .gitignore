@@ -1,0 +1,3 @@
+schema.prisma
+node_modules/
+.env
