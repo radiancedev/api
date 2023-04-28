@@ -7,6 +7,7 @@ import { PayloadType } from "../structures/Payload";
 import { ActivateAccountPayload, LoginAccountPayload } from "../structures/payloads/AccountPayloads";
 import { Snowflake } from "../util/Snowflake";
 import { SessionType } from "../structures/enums/SessionType";
+import { SafeUserQuery } from "../util/Constants";
 
 interface Flow {
     token: string;
@@ -150,9 +151,13 @@ export class OnboardingController extends Controller {
                     email: payload.data.login
                 }]
             },
-            include: {
-                groups: true
-            }
+            select: {
+                ...SafeUserQuery.select,
+                id: true,
+                password: true,
+                email: true
+            },
+            
         });
 
         if (!user) {
@@ -203,8 +208,7 @@ export class OnboardingController extends Controller {
             message: "You have successfully logged in",
             data: {
                 user: {
-                    ...ctx.prisma?.omit(user, ["password", "email", "activation_code"])
-                    
+                    ...ctx.prisma?.omit(user, ["password", "email"])
                 },
                 session: session
             }

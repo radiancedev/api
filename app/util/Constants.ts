@@ -12,7 +12,11 @@ export const SafeUserQuery: Prisma.UserArgs = {
         avatar_hash: true,
         banner_hash: true,
         created_at: true,
-        groups: true,
+        groups: {
+            select: {
+                group: true
+            }
+        },
     }
 } as const;
 

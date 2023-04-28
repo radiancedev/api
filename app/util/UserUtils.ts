@@ -1,5 +1,5 @@
 import { User } from "@prisma/client";
-import { WithGroupsAndGroupData } from "./PrismaUtilityTypes";
+import { WithGroupData } from "./PrismaUtilityTypes";
 
 
 export enum GroupPermissions {
@@ -31,7 +31,7 @@ export class UserUtils {
         throw new Error('This class cannot be instantiated');
     }
     
-    static getUserPermissions(user: User & WithGroupsAndGroupData) {
+    static getUserPermissions(user: User & WithGroupData) {
         let permissionValue = 0;
 
         for (const { group } of user.groups) {
@@ -41,7 +41,7 @@ export class UserUtils {
         return permissionValue;
     }
 
-    static hasPermission(user: User & WithGroupsAndGroupData, permission: GroupPermissions) {
+    static hasPermission(user: User & WithGroupData, permission: GroupPermissions) {
         return (this.getUserPermissions(user) & permission) === permission;
     }
 }
