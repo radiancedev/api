@@ -36,5 +36,8 @@
     "jsonwebtoken": "^9.0.0",
     "node-fetch": "^2.6.9",
     "prisma": "^4.13.0"
+  },
+  "import": {
+    "output": "./schema.prisma"
   }
 }
