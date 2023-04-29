@@ -18,6 +18,9 @@ jobs:
               uses: actions/setup-node@v3
               with:
                   node-version: 18
+                  
+            - name: NPM Cache Clean
+              run: npm cache clean --force
 
             - name: Install Prisma CLIs
               run: npm install -g prisma prisma-import
