@@ -20,13 +20,13 @@ jobs:
                   node-version: 18
 
             - name: Install Prisma CLI
-              run: npm install -g prisma && npm i @prisma/client
+              run: npm install prisma && npm i @prisma/client
               
             - name: Generate Prisma Schema
               run: npx prisma-import -s "prisma/**/*.prisma" --output "schema.prisma" --force
 
             - name: Generate Prisma Client
-              run: prisma generate
+              run: npx prisma generate
 
             - name: Install NPM dependencies
               run: npm install
