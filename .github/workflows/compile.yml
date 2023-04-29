@@ -25,8 +25,15 @@ jobs:
             - name: Generate Prisma Client
               run: prisma generate
 
+            # This is required as installing arcadia before anything will cause this workflow to fail.
+            - name: Remove Arcadia
+              run: npm remove bismuthmoe/arcadia
+
             - name: Install NPM dependencies
               run: npm install
+              
+            - name: Install Arcadia
+              run: npm install bismuthmoe/arcadia
 
             - name: Run TSC
               run: npx tsc
