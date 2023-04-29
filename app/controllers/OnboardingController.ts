@@ -56,7 +56,7 @@ export class OnboardingController extends Controller {
         }
 
         // Check if the username is taken.
-        const existingUser = await ctx.prisma?.user.findUnique({
+        const existingUser = await ctx.orm.user.findUnique({
             where: {
                 name: ctx.body.name
             }
@@ -77,7 +77,7 @@ export class OnboardingController extends Controller {
         }
 
         // Create the user's account
-        const data = await ctx.prisma?.user.create({
+        const data = await ctx.orm.user.create({
             data: {
                 id: Snowflake.generate(),
                 name: ctx.body.name,
@@ -108,7 +108,7 @@ export class OnboardingController extends Controller {
         }
 
         // Get the user by their id and activation code
-        const user = await ctx.prisma?.user.findFirst({
+        const user = await ctx.orm.user.findFirst({
             where: {
                 id: payload.data.user_id,
                 activation_code: payload.data.activation_code
@@ -120,7 +120,7 @@ export class OnboardingController extends Controller {
         }
 
         // Activate the user's account
-        const safeUser = ctx.prisma?.omit(await ctx.prisma?.user.update({
+        const safeUser = ctx.orm.omit(await ctx.orm.user.update({
             where: {
                 id: user.id
             },
@@ -142,7 +142,7 @@ export class OnboardingController extends Controller {
             return { status: 400, error: "Missing login or password" };
         }
 
-        const user = await ctx.prisma?.user.findFirst({
+        const user = await ctx.orm.user.findFirst({
             where: {
                 OR: [{
                     name: payload.data.login
@@ -186,7 +186,7 @@ export class OnboardingController extends Controller {
 
 
         // Create a session for the user
-        const session = await ctx.prisma?.session.create({
+        const session = await ctx.orm.session.create({
             data: {
                 id: Snowflake.generate(),
                 user_id: user.id,
@@ -208,7 +208,7 @@ export class OnboardingController extends Controller {
             message: "You have successfully logged in",
             data: {
                 user: {
-                    ...ctx.prisma?.omit(user, ["password", "email"])
+                    ...ctx.orm.omit(user, ["password", "email"])
                 },
                 session: session
             }

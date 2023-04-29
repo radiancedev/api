@@ -22,7 +22,7 @@ const URL_REGEX = /https?:\/\/([a-zA-Z0-9]{1,}\.([a-zA-Z]{1,}))/g;
 
 export class PostController extends Controller {
     async index(ctx: Context, id: string) {
-        const post = await ctx.prisma?.post.findFirst({
+        const post = await ctx.orm.post.findFirst({
             where: {
                 id: id
             },
@@ -84,7 +84,7 @@ export class PostController extends Controller {
 
         if (parentId) {
             // Check if the parent post exists
-            const parentPost = await ctx.prisma?.post.findUnique({
+            const parentPost = await ctx.orm.post.findUnique({
                 where: {
                     id: parentId
                 }
@@ -128,7 +128,7 @@ export class PostController extends Controller {
                 };
             }
 
-            const parentPost = await ctx.prisma?.post.findUnique({
+            const parentPost = await ctx.orm.post.findUnique({
                 where: {
                     id: args.reply.to
                 },
@@ -159,7 +159,7 @@ export class PostController extends Controller {
 
         data.entities = entities as Prisma.InputJsonObject;
 
-        const post = await ctx.prisma?.post.create({
+        const post = await ctx.orm.post.create({
             data,
             include: {
                 parent: data.is_reply ? true : false,
@@ -190,7 +190,7 @@ export class PostController extends Controller {
             };
         }
 
-        const parentPost = await ctx.prisma?.post.findUnique({
+        const parentPost = await ctx.orm.post.findUnique({
             where: {
                 id: parentId
             }
@@ -219,7 +219,7 @@ export class PostController extends Controller {
         data.is_repost = true;
         data.original_post_id = parentPost.id;
 
-        const post = await ctx.prisma?.post.create({
+        const post = await ctx.orm.post.create({
             data,
             include: {
                 original: true
@@ -237,7 +237,7 @@ export class PostController extends Controller {
     async delete(ctx: Context, id: string) {
         const user: User & WithGroupsAndGroupData = ctx.get("user");
 
-        const post = await ctx.prisma?.post.findUnique({
+        const post = await ctx.orm.post.findUnique({
             where: {
                 id: id
             }
@@ -274,7 +274,7 @@ export class PostController extends Controller {
         };
     }
 
-    private async parseEntities(content?: string, prisma?: PrismaExtendedClient | null): Promise<EntitiesBody> {
+    private async parseEntities(content?: string, orm: PrismaExtendedClient | null): Promise<EntitiesBody> {
         // Parse entities from the text and context
         const entities: EntitiesBody = {};
 
@@ -288,7 +288,7 @@ export class PostController extends Controller {
 
         for (let match of mentions!) {
             const username = match[1];
-            const mentionedUser = await prisma?.user.findUnique({
+            const mentionedUser = await orm.user.findUnique({
                 where: {
                     name: username
                 }

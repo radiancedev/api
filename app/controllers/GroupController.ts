@@ -18,7 +18,7 @@ export class GroupController extends Controller {
             }
         } else {
             // Return every permission for the group
-            let group = await ctx.prisma?.group.findUnique({
+            let group = await ctx.orm.group.findUnique({
                 where: {
                     id: group_id
                 }

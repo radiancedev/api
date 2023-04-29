@@ -26,7 +26,7 @@ export class AuthorizationMiddleware {
                 // Check if the token is valid
                 if (token.type === SessionType.User) {
                     // Get the session from the database
-                    const session = await ctx.prisma?.session.findFirst({
+                    const session = await ctx.orm.session.findFirst({
                         where: {
                             session_token: baseToken
                         },
@@ -44,7 +44,7 @@ export class AuthorizationMiddleware {
                     }
 
                     // Set the user to the context
-                    ctx.set("user", await ctx.prisma?.user.findUnique({
+                    ctx.set("user", await ctx.orm.user.findUnique({
                         where: {
                             id: session.user_id
                         }
