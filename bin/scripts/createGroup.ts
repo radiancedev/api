@@ -25,7 +25,7 @@ export const choices = [{
 }];
 
 export async function execute(ctx: ScriptContext) {
-    const group = await ctx.prisma.group.create({
+    const group = await ctx.orm.group.create({
         data: {
             id: Snowflake.generate(),
             name: ctx.choices?.name,
@@ -37,7 +37,7 @@ export async function execute(ctx: ScriptContext) {
     if (ctx.choices?.assignments) {
         let ids = ctx.choices.assignments.split(",").map((id: string) => id.trim());
     
-        let users = await ctx.prisma.user.findMany({
+        let users = await ctx.orm.user.findMany({
             where: {
                 id: {
                     in: ids
@@ -45,7 +45,7 @@ export async function execute(ctx: ScriptContext) {
             }
         });
 
-        await ctx.prisma.group.update({
+        await ctx.orm.group.update({
             where: {
                 id: group.id
             },

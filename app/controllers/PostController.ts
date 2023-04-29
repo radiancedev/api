@@ -4,7 +4,7 @@ import { WithGroupsAndGroupData } from "../util/PrismaUtilityTypes";
 import { Snowflake } from "../util/Snowflake";
 import { EntitiesBody, EntityType } from "../structures/Entity";
 import { MediaEntity } from "../structures/entities/MediaEntity";
-import { PrismaExtendedClient } from "@bismuthmoe/arcadia/dist/orm/PrismaExtendedClient";
+import { ORM } from "@bismuthmoe/arcadia/dist/orm/ORM";
 import { createRecursiveSafePostQuery, SafeUserQuery } from "../util/Constants";
 import { GroupPermissions, UserUtils } from "../util/UserUtils";
 
@@ -74,7 +74,7 @@ export class PostController extends Controller {
         }
 
         let id = Snowflake.generate();
-        let entities = await this.parseEntities(args.content, ctx.prisma)
+        let entities = await this.parseEntities(ctx.orm, args.content)
         let data: Prisma.PostUncheckedCreateInput = {
             id: id,
             author_id: user.id,
@@ -213,7 +213,7 @@ export class PostController extends Controller {
             author_id: user.id,
             content: args.content,
             sensitive: parentPost.sensitive,
-            entities: await this.parseEntities(args.content, ctx.prisma) as Prisma.InputJsonObject
+            entities: await this.parseEntities(ctx.orm, args.content) as Prisma.InputJsonObject
         }
 
         data.is_repost = true;
@@ -264,7 +264,7 @@ export class PostController extends Controller {
         }
 
         // Delete the post and all of its children
-        await this.deletePost(ctx.prisma!, post);
+        await this.deletePost(ctx.orm!, post);
         
         return {
             status: 200,
@@ -274,7 +274,7 @@ export class PostController extends Controller {
         };
     }
 
-    private async parseEntities(content?: string, orm: PrismaExtendedClient | null): Promise<EntitiesBody> {
+    private async parseEntities(orm: ORM, content?: string): Promise<EntitiesBody> {
         // Parse entities from the text and context
         const entities: EntitiesBody = {};
 
@@ -347,7 +347,7 @@ export class PostController extends Controller {
 
         console.log("owo");
 
-        let response = await fetch(new URL("/v1/media", process.env.CDN_URL), {
+        let response = await fetch(new URL("/v1/media", process.env.CDN_URL).toString(), {
             method: "POST",
             body: formData
         }).then(res => res.json());
@@ -377,7 +377,7 @@ export class PostController extends Controller {
         return { entities, errors };
     }
 
-    private async deletePost(prisma: PrismaExtendedClient, post: Post) {
+    private async deletePost(prisma: ORM, post: Post) {
         const children = await prisma.post.findMany({
             where: {
                 OR: [{
