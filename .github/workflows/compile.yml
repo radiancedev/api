@@ -27,12 +27,18 @@ jobs:
               
             - name: Generate Prisma Schema
               run: npx prisma-import -s "prisma/**/*.prisma" --output "schema.prisma" --force
+              
+            - name: Uninstall Arcadia
+              run: npm uninstall bismuthmoe/arcadia
 
             - name: Generate Prisma Client
               run: npx prisma generate
 
             - name: Install NPM dependencies
               run: npm install
+              
+            - name: Install Arcadia
+              run: npm install bismuthmoe/arcadia
 
             - name: Run TSC
               run: npx tsc
