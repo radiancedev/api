@@ -32,7 +32,7 @@ jobs:
               run: npm install @prisma/client
 
             - name: Install NPM dependencies
-              run: npm install
+              run: npm install && ls -a node_modules
               
             - name: Reinstall Arcadia
               run: npm install radiancedev/arcadia
