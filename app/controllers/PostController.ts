@@ -51,6 +51,7 @@ export class PostController extends Controller {
             args = JSON.parse(ctx.body.payload);
         }
 
+
         if (ctx.files?.length == 0 && args.content == undefined) {
             return {
                 status: 400,
@@ -61,7 +62,7 @@ export class PostController extends Controller {
                 }
             };
         } else {
-            if (ctx.files?.length! > 0 && !ctx.header("Content-Type")?.includes("multipart/form-data")) {
+            if (ctx.files?.length > 0 && !ctx.header("Content-Type")?.includes("multipart/form-data")) {
                 return {
                     status: 400,
                     error: {

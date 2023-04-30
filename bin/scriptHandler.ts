@@ -1,10 +1,10 @@
 import fs from "fs";
 import path from "path";
 import inquirer from "inquirer";
-import { PrismaExtendedClient } from "@bismuthmoe/arcadia/dist/orm/PrismaExtendedClient";
+import { ORM } from "@bismuthmoe/arcadia/dist/orm/ORM";
 
 export interface ScriptContext {
-    prisma: PrismaExtendedClient;
+    orm: ORM;
     choices?: Record<string, any>;
 
 }
