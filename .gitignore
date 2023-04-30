@@ -1,4 +1,0 @@
-schema.prisma
-node_modules/
-.env
-dist/
