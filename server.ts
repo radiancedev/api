@@ -12,3 +12,5 @@ app.express.set("trust proxy", true);
 app.register(Routes);
 
 app.listen(3000);
+
+export default app.express;
