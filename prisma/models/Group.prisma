@@ -1,0 +1,14 @@
+import { GroupAssignment } from "GroupAssignment"
+
+model Group {
+    id          String            @id
+    name        String
+    icon_asset  String
+    description String?           @default("No description provided.")
+    color       String            @default("#FFFFFF")
+    permissions Int               @default(0)
+    public      Boolean           @default(true)
+    assignments GroupAssignment[]
+
+    @@map("groups")
+}

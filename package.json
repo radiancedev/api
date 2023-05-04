@@ -1,0 +1,43 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "scripts": "npx ts-node bin/scriptHandler.ts",
+    "db:merge": "npx prisma-import -s prisma/**/*.prisma --output schema.prisma --force",
+    "db:generate": "npx prisma generate",
+    "db:types": "npm run db:merge && npm run db:generate",
+    "db:migrate": "npm run db:types && npx prisma migrate dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/express-ws": "^3.0.1",
+    "@types/geoip-lite": "^1.4.1",
+    "@types/inquirer": "^9.0.3",
+    "@types/jsonwebtoken": "^9.0.1",
+    "@types/multer": "^1.4.7",
+    "@types/node": "^18.15.13",
+    "@types/node-fetch": "^2.6.3",
+    "prisma-import": "^1.0.4",
+    "ts-node": "^10.9.1"
+  },
+  "dependencies": {
+    "@bismuthmoe/arcadia": "github:radiancedev/arcadia",
+    "@prisma/client": "^4.13.0",
+    "argon2": "^0.30.3",
+    "form-data": "^4.0.0",
+    "geoip-lite": "^1.4.7",
+    "inquirer": "^8.0.0",
+    "jsonwebtoken": "^9.0.0",
+    "node-fetch": "^2.6.9",
+    "prisma": "^4.13.0"
+  },
+  "import": {
+    "output": "./schema.prisma"
+  }
+}

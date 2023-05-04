@@ -1,0 +1,15 @@
+import { Post } from "./Post"
+import { User } from "./User"
+import { InteractionType } from "../enums/InteractionType"
+
+model Interaction {
+    type    InteractionType
+    post_id String
+    user_id String
+
+    post Post @relation(fields: [post_id], references: [id])
+    user User @relation(fields: [user_id], references: [id])
+
+    @@id([post_id, user_id])
+    @@map("interactions")
+}

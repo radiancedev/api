@@ -1,0 +1,44 @@
+name: Compile
+on:
+    push:
+        branches:
+            - master
+    pull_request:
+
+jobs:
+    Compilation:
+        name: Compilation
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout project
+              uses: actions/checkout@v3
+
+            - name: Use Node.js v18
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 18
+
+            - name: Install Prisma CLIs
+              run: npm install -g prisma prisma-import
+              
+            - name: Generate Prisma Schema
+              run: prisma-import -s "prisma/**/*.prisma" --output "schema.prisma" --force
+                  
+            - name: Generate Prisma Client
+              run: prisma generate
+
+            - name: Install Prism Client
+              run: npm install @prisma/client
+
+            - name: Install NPM dependencies
+              run: npm install
+              
+            - name: Properly install Arcadia
+              run: |
+                node node_modules/@bismuthmoe/arcadia/scripts/postinstall.js
+                rm -rf node_modules/@bismuthmoe/arcadia/dist
+                tsc --project node_modules/@bismuthmoe/arcadia
+
+            - name: Run TSC
+              run: npx tsc
