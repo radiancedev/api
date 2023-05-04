@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "scripts": "npx ts-node bin/scriptHandler.ts",
-    "db:merge": "npx prisma-import -s prisma/**/*.prisma --output schema.prisma --force",
+    "db:merge": "npx prisma-import -s \"prisma/**/*.prisma\" --output \"./schema.prisma\" --force",
     "db:generate": "npx prisma generate",
     "db:types": "npm run db:merge && npm run db:generate",
     "db:migrate": "npm run db:types && npx prisma migrate dev"
