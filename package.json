@@ -30,6 +30,7 @@
     "@bismuthmoe/arcadia": "github:radiancedev/arcadia",
     "@prisma/client": "^4.13.0",
     "argon2": "^0.30.3",
+    "dotenv": "^16.0.3",
     "form-data": "^4.0.0",
     "geoip-lite": "^1.4.7",
     "inquirer": "^8.0.0",
